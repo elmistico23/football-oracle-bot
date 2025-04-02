@@ -1,7 +1,7 @@
 require('dotenv').config();
 const TelegramBot = require('8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss');
 const token = process.env.TOKEN;
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss, {polling: true});
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
