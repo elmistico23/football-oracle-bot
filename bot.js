@@ -20,10 +20,10 @@ bot.onText(/\/start/, (msg) => {
 });
 
 // 4. Keep-alive para Render
+const PORT = process.env.PORT || 3001; // Cambiamos a 3001 u otro puerto
 require('express')()
   .get('/', (req, res) => res.send('Bot Online'))
-  .listen(process.env.PORT || 3000);
-
+  .listen(PORT, () => console.log(`🔄 Servidor en puerto ${PORT}`));
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
