@@ -2,18 +2,29 @@ require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
 // 1. Verifica che il token esista
-if (!process.env.TOKEN) {
-  console.error("❌ Token mancante! Configuralo in Render.com → Environment");
+const token = process.env.TOKEN || process.env.BOT_TOKEN;
+if (!token) {
+  console.error("❌ ERRORE: Token non configurato!");
+  console.log("ℹ️ Configuralo in Render.com > Environment come 'TOKEN'");
   process.exit(1);
 }
 
 // 2. Inizializza il bot
-const bot = new TelegramBot(process.env.TOKEN, {polling: true});
+const bot = new TelegramBot(token, {polling: true});
 
-// 3. Debug sicuro (mostra solo primi 5 caratteri)
-console.log(`✅ Bot avviato con token: ${process.env.TOKEN.substring(0,5)}...`);
+// 3. Debug sicuro
+console.log("✅ Bot avviato. Token inizia con:", token.substring(0, 5) + "...");
 
-// ... il resto del tuo codice ...
+// 4. Test base
+bot.onText(/\/start/, (msg) => {
+  bot.sendMessage(msg.chat.id, "🚀 Bot funzionante correttamente!");
+});
+
+// 5. Keep-alive per Render
+const express = require('express');
+const app = express();
+app.get('/', (req, res) => res.send('Bot attivo'));
+app.listen(process.env.PORT || 3000);
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
