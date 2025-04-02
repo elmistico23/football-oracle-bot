@@ -1,7 +1,19 @@
 require('dotenv').config();
-const TelegramBot = require('8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss');
-const token = process.env.TOKEN;
-const bot = new TelegramBot(8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss, {polling: true});
+const TelegramBot = require('node-telegram-bot-api');
+
+// Verifica che il token esista
+if (!process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss) {
+  console.error("❌ ERRORE: Token non configurato!");
+  console.log("ℹ️ Assicurati di aver impostato TOKEN in Render.com > Environment");
+  process.exit(1);
+}
+
+const bot = new TelegramBot(process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss, {polling: true});
+
+// Aggiungi questo per debug
+console.log("✅ Bot avviato correttamente. Token iniziale:", process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss.substring(0, 5) + "...");
+
+// ... il resto del tuo codice ...
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
