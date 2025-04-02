@@ -1,17 +1,17 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
-// Verifica che il token esista
-if (!process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss) {
-  console.error("❌ ERRORE: Token non configurato!");
-  console.log("ℹ️ Assicurati di aver impostato TOKEN in Render.com > Environment");
+// 1. Verifica che il token esista
+if (!process.env.TOKEN) {
+  console.error("❌ Token mancante! Configuralo in Render.com → Environment");
   process.exit(1);
 }
 
-const bot = new TelegramBot(process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss, {polling: true});
+// 2. Inizializza il bot
+const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
-// Aggiungi questo per debug
-console.log("✅ Bot avviato correttamente. Token iniziale:", process.env.8147896521:AAEKb7JwdjXQRC84X_ZG-xF-xb006GXwTss.substring(0, 5) + "...");
+// 3. Debug sicuro (mostra solo primi 5 caratteri)
+console.log(`✅ Bot avviato con token: ${process.env.TOKEN.substring(0,5)}...`);
 
 // ... il resto del tuo codice ...
 
