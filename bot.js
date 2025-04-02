@@ -19,11 +19,6 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(msg.chat.id, "🤖 ¡Bot activo! ID: " + msg.chat.id);
 });
 
-// 4. Keep-alive para Render
-const PORT = process.env.PORT || 3001; // Cambiamos a 3001 u otro puerto
-require('express')()
-  .get('/', (req, res) => res.send('Bot Online'))
-  .listen(PORT, () => console.log(`🔄 Servidor en puerto ${PORT}`));
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
@@ -428,5 +423,10 @@ bot.onText(/\/squadra (.+)/, (msg, match) => {
 // KEEP-ALIVE PER RENDER
 const express = require('express');
 const app = express();
-app.listen(process.env.PORT || 3000, () => console.log("Bot attivo!"));
+const PORT = process.env.PORT || 0; // Usa 0 para puerto automático
 
+app.get('/', (req, res) => res.send('Bot Online'));
+
+app.listen(PORT, () => {
+  console.log(`🔄 Servidor en puerto ${PORT}`);
+});
