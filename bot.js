@@ -1,28 +1,29 @@
+// Configuración inicial
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
-// 1. Leggi il token SOLO da process.env.TOKEN
+// 1. Verifica el token
 const token = process.env.TOKEN;
-
 if (!token) {
-  console.error("❌ ERRORE CRITICO: Token non trovato");
-  console.log("ℹ️ Configura la variabile TOKEN in Render.com > Environment");
+  console.error("❌ ERROR: Token no encontrado en process.env.TOKEN");
+  console.log("ℹ️ Configúralo en Render.com > Environment como 'TOKEN'");
   process.exit(1);
 }
 
-// 2. Debug sicuro (mostra solo primi 5 caratteri)
-console.log("✅ Token rilevato (iniziale):", token.substring(0, 5) + "...");
-
-// 3. Inizializza il bot
+// 2. Inicia el bot (debug seguro)
+console.log("✅ Token detectado (inicio):", token.substring(0, 5) + "...");
 const bot = new TelegramBot(token, {polling: true});
 
-// 4. Comando test base
-bot.on('message', (msg) => {
-  bot.sendMessage(msg.chat.id, "🚀 Bot funzionante! Il tuo ID: " + msg.chat.id);
+// 3. Comando básico de prueba
+bot.onText(/\/start/, (msg) => {
+  bot.sendMessage(msg.chat.id, "🤖 ¡Bot activo! ID: " + msg.chat.id);
 });
 
-// 5. Keep-alive per Render
-require('express')().listen(process.env.PORT || 3000);
+// 4. Keep-alive para Render
+require('express')()
+  .get('/', (req, res) => res.send('Bot Online'))
+  .listen(process.env.PORT || 3000);
+
 
 // Database delle carte con immagini reali (URL pubblici)
 const cards = [
