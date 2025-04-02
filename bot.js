@@ -374,43 +374,35 @@ bot.onText(/\/start/, (msg) => {
 // PESCA CON EFFETTO DRAMMATICO
 bot.onText(/\/carta/, async (msg) => {
   const chatId = msg.chat.id;
-  const loadingMsg = await bot.sendMessage(chatId, "Sto mischiando le carte... " + loadingEmojis[0]);
   
-  // Animazione attesa
-  let i = 1;
-  const loadingInterval = setInterval(async () => {
-    await bot.editMessageText("Sto mischiando le carte... " + loadingEmojis[i % 3], {
-      chat_id: chatId,
-      message_id: loadingMsg.message_id
-    });
-    i++;
-  }, 500);
-  
-  // Delay 3 secondi
-  setTimeout(async () => {
-    clearInterval(loadingInterval);
-    
+  try {
+    // 1. Mensaje de carga inicial
+    const loadingMsg = await bot.sendMessage(chatId, "🔮 Sto mischiando le carte...");
+
+    // 2. Animación simplificada (sin interval)
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
+
+    // 3. Selección de carta
     const randomCard = cards[Math.floor(Math.random() * cards.length)];
-    const isReversed = Math.random() > 0.5; // 50% capovolta
+    const isReversed = Math.random() > 0.5;
     const orientation = isReversed ? "reversed" : "upright";
     
+    // 4. Construye el mensaje
     let responseText = `*${randomCard.name}* ${isReversed ? '(⌛ Capovolta)' : '(✨ Dritta)'}\n\n`;
-    responseText += `${orientation === 'uprighted' ? '🔺 ' : '🔻 '}${randomCard.orientations[orientation].text}`;
-    
-    // Aggiungi consiglio squadra se impostata
-    if (msg.from.team) {
-      responseText += `\n\n${randomCard.teamRules[msg.from.team] || ''}`;
-    }
-    
-    // Invia l'immagine con risposta
+    responseText += `${randomCard.orientations[orientation].text}`;
+
+    // 5. Envía la foto (elimina el mensaje de carga después)
     await bot.sendPhoto(chatId, randomCard.orientations[orientation].image, {
       caption: responseText,
       parse_mode: 'Markdown'
     });
     
-    // Cancella il messaggio di caricamento
     await bot.deleteMessage(chatId, loadingMsg.message_id);
-  }, 3000);
+
+  } catch (error) {
+    console.error("❌ Error en /carta:", error);
+    bot.sendMessage(chatId, "❌ Si è verificato un errore. Riprova più tardi!");
+  }
 });
 
 // IMPOSTA SQUADRA
